@@ -22,6 +22,7 @@ include('config.php');
    }
 
 	 $address = $_POST['address'];
+	 $second_add = $_POST['second_add'];
 
 	 $gender = $_POST['gender'];
 	 $password = $_POST['password'];
@@ -30,10 +31,20 @@ include('config.php');
 
 	 
 
+	  $sql = "INSERT INTO users(email,password) VALUES ('".$email."','".$password."')";
+	 	if(mysqli_query($conn, $sql)){
+
 	 
-	 
-	 $insert = "INSERT INTO cust_detail(name, email,mobile,address,gender,password) VALUES ('".$name."','".$email."','".$mobile."','".$address."','".$gender."','".$password."')";
-	 $query = mysqli_query($conn, $insert);
+	  $sql = "INSERT INTO cust_detail(name, email,mobile,address,second_add,gender,password) VALUES ('".$name."','".$email."','".$mobile."','".$address."','".$second_add."','".$gender."','".$password."')";
+	 		if (mysqli_query($conn, $sql)) {
+    				echo "New record created successfully";
+		} else {
+    			echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+			}
+
+	}else{
+		echo "couldnot create user";
+	}
 	 //header("location:cust_login.php");
 	  }
 ?>
@@ -43,6 +54,24 @@ include('config.php');
 	<head>
 		<title>REGISTRATION PAGE</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script type="text/javascript" src = "jquery/jquery-3.2.1.min.js"></script>
+        <script src = "ajax.js"></script>
+        <style>
+.form-group .add2 {
+	display: none;
+}
+</style>
+        <script>
+$(document).ready(function(){
+    $(".form-group .add").click(function(){
+        $(".add2").toggle();
+    });
+    // $("").click(function(){
+    //     $(".add2").show();
+    // });
+});
+</script>
+
 	</head>
 	<body>
 		<div class="container">
@@ -65,8 +94,11 @@ include('config.php');
 			<input type="text" name="mobile" class="form-control" id="mobile" maxlength ="10">
 			</div>
 			<div class="form-group">
-			<label for="address">Address:</label>
-			<textarea class="form-control" name="address" rows="3" id="address"></textarea>
+			<label> Address </label>
+			<input type ="text" name ="address"	><br>
+			 <label class = "add"><input type="checkbox"> Click here To Add secondary address</label><br>
+			 <label class ="add2"> Secondary Address<input type ="text" name ="second_add"	> </label><br>
+			
 			</div>
 			<div class="form-group">
 			<label for="gender">Gender:</label>

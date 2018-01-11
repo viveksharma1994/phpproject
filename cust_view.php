@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 ?>
 
 <!DOCTYPE HTML>
@@ -7,29 +8,29 @@ session_start();
     <head>
         <title>Members</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
-
+        
+        <script type="text/javascript" src = "jquery/jquery-3.2.1.min.js"></script>
+        <script src = "ajax.js"></script>
     </head>
     <?php
     $email = $_SESSION['email'];//$_SESSION['username'];
     include 'config.php';
-
+    //print_r($_POST);
     //$query = mysqli_query($conn, $select);
     $select = "SELECT * FROM  cust_detail WHERE email='$email'";
     $query = mysqli_query($conn, $select);
     $result = mysqli_fetch_array($query);
     if ($result['role'] == 1) {
     	//print_r('hello');exit();
-        if (isset($_GET['mobile']) && is_numeric($_GET['mobile'])) {
-            $select = "SELECT * FROM cust_detail WHERE mobile = '" . $_GET['mobile'] . "'";
+        if (isset($_POST['mobile']) && is_numeric($_POST['mobile'])) {
+            $select = "SELECT * FROM cust_detail WHERE mobile = '" . $_POST['mobile'] . "'";
         } else {
             $select = "SELECT * FROM cust_detail";
         }
         ?>
-        <form method="get" action=""> 
-            <input name="mobile" type ="text" id="text"><br><br>
-            <button name="search">Search</button><br><br>
+        <form method="POST" action=""> 
+            <input name="mobile" type ="text" id="keyword"><br><br>
+            <button id="search">Search</button><br><br>
         </form>
         <?php
     }
@@ -47,10 +48,11 @@ session_start();
                             <th>Email</th>
                             <th>Mobile</th>
                             <th>Address</th>
+                            <th>Secondary Address</th>
                             <th>Gender</th>
                             <th>Password</th>
                             <th>Edit</th>
-                           
+                         
                             <?php
                             if ($result['role'] == 1) {
                                 ?>
@@ -62,20 +64,22 @@ session_start();
                             
                                 <?php
                                 $res = '';
+                                // $select = "SELECT * FROM cust_detail";
                                 $query = mysqli_query($conn, $select);
                                 while ($result = mysqli_fetch_array($query)) {
-                                  
+                                    
                                    $res .= "<tr><td>".$result['id']." </td>
                                     <td>". $result['name']." </td>
                                     <td>". $result['email']. " </td>
                                     <td>". $result['mobile']." </td>
                                     <td>". $result['address']." </td>
+                                     <td>". $result['second_add']." </td>
                                     <td>". $result['gender']." </td>
                                     <td>". $result['password']." </td>
-                                    <td><a class='btn btn-primary btn-sm' href='cust_edit.php?id='".$result['id']." >Edit</a></td>
-                                    <td><a class='btn btn-danger btn-sm' href='cust_delete.php?id='".$result['id'].">Delete</a></td>
-                                     <td><a class='btn btn-success btn-sm' href='makeadmin.php?id='".$result['id'].".>Make Admin</a></td></tr>";
-                               if($_POST['keywords']){
+                                    <td><a class='btn btn-primary btn-sm' href='cust_edit.php?id=".$result['id']."'>Edit</a></td>
+                                    <td><a class='btn btn-danger btn-sm' href='cust_delete.php?id=".$result['id']."'>Delete</a></td>
+                                     <td><a class='btn btn-success btn-sm' href='makeadmin.php?id=".$result['id']."'>Make Admin</a></td></tr>";
+                               if($_POST['mobile']){
                                 echo $res;
                                }
                               echo $res;
@@ -94,6 +98,7 @@ session_start();
                                     <td><?php echo $result['email']; ?></td>
                                     <td><?php echo $result['mobile']; ?></td>
                                     <td><?php echo $result['address']; ?></td>
+                                      <td><?php echo $result['second_add']; ?></td>
                                     <td><?php echo $result['gender']; ?></td>
                                     <td><?php echo $result['password']; ?></td>
                                     <td><a class="btn btn-primary btn-sm"href="cust_edit.php?id=<?php echo $result['id']; ?>" >Edit</a></td>

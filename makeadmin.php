@@ -1,9 +1,8 @@
 <?php
-
-include('config.php');
+include'config.php';
 
 $id = $_GET['id'];
-$select = "SELECT * FROM cust_detail where id=".$id;
+$select = "SELECT * FROM cust_detail WHERE id=".$id;
 $query = mysqli_query($conn,$select);
 $res = mysqli_fetch_array($query);
 

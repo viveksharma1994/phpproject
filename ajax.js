@@ -1,7 +1,9 @@
 $(document).ready(function() {
    
  $("#search").click(function() {
+
    var keywords = $('#keyword').val();
+   //console.log(keywords);exit;
    if(keywords != "") {
        
      $.ajax({
